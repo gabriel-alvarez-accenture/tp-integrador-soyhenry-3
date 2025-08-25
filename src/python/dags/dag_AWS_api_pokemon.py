@@ -3,11 +3,10 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.operators.bash import BashOperator
 from datetime import datetime
-import json
-import csv
 import boto3
 from dotenv import load_dotenv
 import os
+import time
 
 
 dag_folder = os.path.dirname(__file__)
@@ -22,6 +21,8 @@ aws_secret_access_key   = os.getenv("aws_secret_access_key")
 
 
 def execute_step_function():
+    time.sleep(180)  
+    
     sfn = boto3.client(
         'stepfunctions',
         aws_access_key_id=aws_access_key_id,
@@ -50,10 +51,6 @@ with DAG(
         task_id='extraction_airbyte',
         bash_command='docker exec airbyte-container python /app/airbyte.py'
     )
-
-
-    task_extraction_airbyte
-
 
     task_execute_step_function = PythonOperator(
         task_id="task_execute_step_function",
