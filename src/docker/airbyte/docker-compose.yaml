@@ -1,0 +1,14 @@
+services:
+  airbyte-container:
+    image: mi-airbyte
+    container_name: airbyte-container
+    restart: "no"
+    networks:
+      - airflow_tp3soyhenry-net
+    volumes:
+      - /c/Users/gabriel.b.alvarez/Desktop/tp-integrador-soyhenry-3/src/python:/app
+    command: tail -f /dev/null
+  
+networks:
+  airflow_tp3soyhenry-net:
+    external: true
